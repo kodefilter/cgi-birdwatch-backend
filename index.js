@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -16,6 +17,31 @@ const requestLogger = (request, response, next) => {
   };
   
 app.use(requestLogger);
+
+const url = "mongodb+srv://fullstack_pradeep:fullstackpradeep@cluster0-uo4sj.mongodb.net/birdwatch-app?retryWrites=true&w=majority"
+
+mongoose.connect(url, {useNewUrlParser: true})
+
+const observationSchema = new mongoose.Schema({
+  name: String,
+  rarity: String,
+  notes: String,
+  timestamp: Date
+})
+
+const observation = mongoose.model('Observation', observationSchema)
+
+const observation = new Observation({
+  name: 'Sparrow',
+  rarity: 'Common',
+  notes: 'active during day',
+  timestamp: new Date(),
+})
+
+observation.save().then(response => {
+  console.log('observation saved!')
+  mongoose.connection.close()
+})
 
 
 let observations = [
@@ -61,12 +87,12 @@ app.get("/", (req, res) => {
 });
 
 // get all the observations
-app.get("/observations", (req, res) => {
+app.get("/api/observations", (req, res) => {
   res.json(observations);
 });
 
 // get a single observsation
-app.get("/observations/:id", (request, response) => {
+app.get("/api/observations/:id", (request, response) => {
   const id = Number(request.params.id);
   //console.log(id)
   const observation = observations.find(observation => observation.id === id);
@@ -86,7 +112,7 @@ const generateId = () => {
 };
 
 // post a single observation
-app.post("/observations", (request, response) => {
+app.post("/api/observations", (request, response) => {
   const body = request.body;
 
   if (!body.name) {

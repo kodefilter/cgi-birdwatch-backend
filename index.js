@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.json())
 
 //middlewares created by me
@@ -120,7 +122,7 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint);
 
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server Running on port ${PORT}`);

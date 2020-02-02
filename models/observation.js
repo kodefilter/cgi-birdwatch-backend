@@ -1,19 +1,19 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 mongoose.set('useFindAndModify', false)
 
-const url = process.env.MONGODB_URI;
+const url = process.env.MONGODB_URI
 
-console.log("connecting to", url);
+console.log('connecting to', url)
 
 mongoose
   .connect(url, { useNewUrlParser: true })
   .then(result => {
-    console.log("connected to MongoDB");
+    console.log('connected to MongoDB')
   })
   .catch(error => {
-    console.log("error connecting to MongoDB: ", error.message);
-  });
+    console.log('error connecting to MongoDB: ', error.message)
+  })
 
 const observationSchema = new mongoose.Schema({
   name: {
@@ -27,15 +27,15 @@ const observationSchema = new mongoose.Schema({
   },
   notes: String,
   timestamp: Date
-});
+})
 
 //remove __v, change _id to id
-observationSchema.set("toJSON", {
+observationSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   }
-});
+})
 
-module.exports = mongoose.model("Observation", observationSchema);
+module.exports = mongoose.model('Observation', observationSchema)

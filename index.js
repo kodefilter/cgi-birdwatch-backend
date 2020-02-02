@@ -32,7 +32,7 @@ app.get("/api/observations", (request, response) => {
 });
 
 // get a single observsation
-app.get("/api/observations/:id", (request, response) => {
+app.get("/api/observations/:id", (request, response, next) => {
   Observation.findById(request.params.id)
     .then(observation => {
       if (observation) {
@@ -61,9 +61,13 @@ app.post("/api/observations", (request, response) => {
     timestamp: new Date()
   });
 
-  observation.save().then(savedObservation => {
-    response.json(savedObservation.toJSON);
-  });
+  observation
+    .save()
+    .then(savedObservation => savedObservation.toJSON())
+    .then(savedAndFormattedObservation => {
+      response.json(savedAndFormattedObservation);
+    })
+    .catch(error => next(error));
 });
 
 //using the middlewares created above
@@ -75,17 +79,18 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  console.error(error.message);
 
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
+  if (error.name === "CastError" && error.kind === "ObjectId") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+  }
 
-  next(error)
-}
+  next(error);
+};
 
-app.use(errorHandler)
-
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 

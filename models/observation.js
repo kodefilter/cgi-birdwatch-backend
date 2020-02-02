@@ -16,13 +16,20 @@ mongoose
   });
 
 const observationSchema = new mongoose.Schema({
-  name: String,
-  rarity: String,
+  name: {
+    type: String,
+    minlength: 3,
+    required: true
+  },
+  rarity: {
+    type: String,
+    required: true
+  },
   notes: String,
   timestamp: Date
 });
 
-
+//remove __v, change _id to id
 observationSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();

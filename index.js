@@ -26,10 +26,10 @@ app.get("/", (req, res) => {
 });
 
 // get all the observations
-app.get("/api/observations", (req, res) => {
+app.get('/api/observations', (request, response) => {
   Observation.find({}).then(observations => {
-    response.json(observations.map(observation => Observation.toJSON()))
-  })
+    response.json(observations.map(observation => observation.toJSON()))
+  });
 });
 
 // get a single observsation

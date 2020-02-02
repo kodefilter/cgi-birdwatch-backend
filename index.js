@@ -29,7 +29,7 @@ const observationSchema = new mongoose.Schema({
   timestamp: Date
 })
 
-const observation = mongoose.model('Observation', observationSchema)
+const Observation = mongoose.model('Observation', observationSchema)
 
 const observation = new Observation({
   name: 'Sparrow',

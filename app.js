@@ -22,7 +22,7 @@ app.use(bodyParser.json())
 app.use(middleware.requestLogger)
 
 
-app.use('/api/observations', observationsRouter)
+app.use('/', observationsRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

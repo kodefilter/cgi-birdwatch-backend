@@ -20,23 +20,28 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger);
 
-
 app.get("/", (req, res) => {
   res.send("<h1>Hello World</h1>");
 });
 
 // get all the observations
-app.get('/api/observations', (request, response) => {
+app.get("/api/observations", (request, response) => {
   Observation.find({}).then(observations => {
-    response.json(observations.map(observation => observation.toJSON()))
+    response.json(observations.map(observation => observation.toJSON()));
   });
 });
 
 // get a single observsation
 app.get("/api/observations/:id", (request, response) => {
-  Observation.findById(request.params.id).then(observation => {
-    response.json(observation.toJSON());
-  });
+  Observation.findById(request.params.id)
+    .then(observation => {
+      if (observation) {
+        response.json(observation.toJSON());
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch(error => next(error));
 });
 
 // implementation of deleting single observation is not on requirement
@@ -68,6 +73,19 @@ const unknownEndpoint = (request, response) => {
 };
 
 app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
+
 
 const PORT = process.env.PORT;
 

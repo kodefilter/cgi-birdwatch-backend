@@ -25,7 +25,13 @@ To Start Server:
 
 To Visit App:
 
-`localhost:3001/`  
+If you install it locally : `localhost:3001/`
+
+On the internet : https://whispering-tundra-87610.herokuapp.com/
+## keep in mind it sometimes takes 20s for the application to run, because Heroku (free tier) :D
+
+
+
 
 ## Reflection
 

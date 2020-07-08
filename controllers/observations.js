@@ -23,8 +23,11 @@ observationsRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-observationsRouter.delete('/:id',(request) => {
-  Observation.findByIdAndDelete(request.params.id).exec()
+observationsRouter.delete('/:id',(request,response,next) => {
+  Observation.findByIdAndDelete(request.params.id)
+    .then(deletedObservation => {
+      response.json(deletedObservation.toJSON())
+    }).catch(error => next(error))
 })
 
 

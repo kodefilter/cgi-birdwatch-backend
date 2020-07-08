@@ -27,7 +27,7 @@ To Visit App:
 
 If you install it locally : `localhost:3001/`
 
-On the internet : https://whispering-tundra-87610.herokuapp.com/
+On the internet : https://pure-atoll-07080.herokuapp.com/
 ## keep in mind it sometimes takes 20s for the application to run, because Heroku (free tier) :D
 
 

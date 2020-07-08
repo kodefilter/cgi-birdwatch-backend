@@ -1,6 +1,5 @@
 const observationsRouter = require('express').Router()
 const Observation = require('../models/observation')
-const { response } = require('express')
 
 
 // get all the observations

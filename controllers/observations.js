@@ -22,6 +22,7 @@ observationsRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+// delete a single observation
 observationsRouter.delete('/:id',(request,response,next) => {
   Observation.findByIdAndDelete(request.params.id)
     .then(deletedObservation => {
@@ -30,7 +31,7 @@ observationsRouter.delete('/:id',(request,response,next) => {
 })
 
 
-// post a single observation
+// post/create a single observation
 observationsRouter.post('/', (request, response, next) => {
   const body = request.body
 

@@ -1,5 +1,6 @@
 const observationsRouter = require('express').Router()
 const Observation = require('../models/observation')
+const { response } = require('express')
 
 
 // get all the observations
@@ -22,7 +23,10 @@ observationsRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-// implementation of deleting single observation is not on requirement
+observationsRouter.delete('/:id',(request) => {
+  Observation.findByIdAndDelete(request.params.id).exec()
+})
+
 
 // post a single observation
 observationsRouter.post('/', (request, response, next) => {
